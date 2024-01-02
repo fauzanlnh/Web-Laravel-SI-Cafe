@@ -13,27 +13,23 @@ class MenuSeeder extends Seeder
      */
     public function run()
     {
-        // 
-        $faker = \Faker\Factory::create();
+        $faker = Faker::create();
         $faker->addProvider(new \FakerRestaurant\Provider\id_ID\Restaurant($faker));
-        //$faker = Faker::create('id_ID');
-        for($x = 1; $x <= 10; $x++){
-        	// insert data dummy menu dengan faker
-        	\DB::table('table_menu')->insert([
-        		'nama_menu' => $faker->foodName(),
-                'harga_menu' => 3000,
-                'kategori' => "Makanan",
-                'status' => "Tersedia",
-        	]);
+        for ($x = 1; $x <= 10; $x++) {
+            \DB::table('menus')->insert([
+                'name' => $faker->foodName(),
+                'price' => $faker->numberBetween(10000, 300000),
+                'category' => "Food",
+                'status' => "available",
+            ]);
         }
-        for($x = 1; $x <= 10; $x++){
-        	// insert data dummy menu dengan faker
-        	\DB::table('table_menu')->insert([
-        		'nama_menu' => $faker->beverageName(),
-                'harga_menu' => 3000,
-                'kategori' => "Minuman",
-                'status' => "Tersedia",
-        	]);
+        for ($x = 1; $x <= 10; $x++) {
+            \DB::table('menus')->insert([
+                'name' => $faker->beverageName(),
+                'price' => $faker->numberBetween(5000, 50000),
+                'category' => "Drink",
+                'status' => "available",
+            ]);
         }
     }
 }

@@ -13,12 +13,12 @@ class CreateTableMenu extends Migration
      */
     public function up()
     {
-        Schema::create('table_menu', function (Blueprint $table) {
-            $table->increments('id_menu');
-            $table->string('nama_menu');
-            $table->integer('harga_menu');
-            $table->string('kategori');
-            $table->string('status');
+        Schema::create('menus', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('name', 50);
+            $table->integer('price');
+            $table->string('category', 20);
+            $table->string('status', 15);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateTableMenu extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_menu');
+        Schema::dropIfExists('menus');
     }
 }

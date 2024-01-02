@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableDetailPemesanan extends Migration
+class CreateTableOrderDetail extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateTableDetailPemesanan extends Migration
      */
     public function up()
     {
-        Schema::create('table_detail_pemesanan', function (Blueprint $table) {
-            $table->increments('id_detail');
-            $table->string('status_pemesanan');
-            $table->unsignedInteger('id_pemesanan');
-            $table->unsignedInteger('id_menu');
-            $table->unsignedInteger('jumlah_pesan');
-            $table->unsignedInteger('total_detail');
+        Schema::create('order_details', function (Blueprint $table) {
+            $table->id('id');
+            $table->unsignedInteger('order_id');
+            $table->unsignedInteger('menu_id');
+            $table->unsignedInteger('price');
+            $table->unsignedInteger('qty');
+            $table->string('order_detail_status', 15);
+            $table->unsignedInteger('detail_total');
             $table->timestamps();
             //$table->foreign('id_pemesanan')->references('id_pemesanan')->on('table_pemesanan');
             //$table->foreign('id_menu')->references('id_menu')->on('table_menu');
@@ -34,6 +35,6 @@ class CreateTableDetailPemesanan extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_detail_pemesanan');
+        Schema::dropIfExists('order_details');
     }
 }
