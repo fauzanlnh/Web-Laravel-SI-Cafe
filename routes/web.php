@@ -55,9 +55,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('/koki/process/{process}/{id_detail}', [DashboardOrderController::class, 'processOrderChef']);
 
     //petugas / Kasir
-    Route::patch('/petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@prosesCheckout');
-    Route::get('/petugas', 'App\Http\Controllers\PemesananController@viewpetugas');
-    Route::get('/petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@viewCheckout');
+    Route::get('/petugas', [DashboardOrderController::class, 'indexPetugas']);
+    Route::get('/petugas/checkout/{orderId}', [DashboardOrderController::class, 'viewCheckoutDetail']);
+    Route::patch('/petugas/checkout/{orderId}', [DashboardOrderController::class, 'processCheckout']);
+
 });
 
 
