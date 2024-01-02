@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\CustomerMenuController;
+use App\Http\Controllers\CustomerOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,68 +20,56 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/',[MakananController::class,'index']);
 
 //Index
-Route::get('/', function () {
-    return view('login');
-});
-Route::get('/Login', function () {
-    return view('login');
-});
-//Route::auth();
-Route::post('Login/cekLogin', 'App\Http\Controllers\MasterController@cekLogin');
+Route::get('/', [AuthController::class, 'index']);
+Route::get('/login', [AuthController::class, 'index']);
+Route::post('login/check', [AuthController::class, 'checkLogin']);
+
+
 Route::group(['middleware' => 'auth'], function () {
-//Petugas    
+    //petugas    
 //View
-    //Admin
-    Route::get('/Admin','App\Http\Controllers\PemesananController@index');
-    Route::get('/Admin/Menu','App\Http\Controllers\MenuController@index');
-    Route::get('/Admin/Menu/Tambah','App\Http\Controllers\MenuController@create');
-    Route::get('/Admin/Menu/Ubah/{id}','App\Http\Controllers\MenuController@edit');
-    Route::get('/Admin/Pegawai','App\Http\Controllers\PegawaiController@index');
-    Route::get('/Admin/Pegawai/Tambah','App\Http\Controllers\PegawaiController@create');
-    Route::get('/Admin/Pegawai/Ubah/{id}','App\Http\Controllers\PegawaiController@edit');
-    Route::get('/Admin/Pemesanan','App\Http\Controllers\PemesananController@getTransaksi');
-    Route::get('/Admin/Transaksi','App\Http\Controllers\PemesananController@viewDataTransaksi');
-    Route::get('/Admin/Transaksi/Export','App\Http\Controllers\PemesananController@export_excel');
-        //Koki
-    Route::get('/Koki','App\Http\Controllers\DetailPemesananController@viewKoki');
-        //Petugas / Kasir
-    Route::get('/Petugas','App\Http\Controllers\PemesananController@viewPetugas');
-    Route::get('/Petugas/Checkout/{id_pemesanan}','App\Http\Controllers\PemesananController@viewCheckout');
+    //admin
+    Route::get('/admin', 'App\Http\Controllers\PemesananController@index');
+    Route::get('/admin/Menu', 'App\Http\Controllers\MenuController@index');
+    Route::get('/admin/Menu/Tambah', 'App\Http\Controllers\MenuController@create');
+    Route::get('/admin/Menu/Ubah/{id}', 'App\Http\Controllers\MenuController@edit');
+    Route::get('/admin/Pegawai', 'App\Http\Controllers\PegawaiController@index');
+    Route::get('/admin/Pegawai/Tambah', 'App\Http\Controllers\PegawaiController@create');
+    Route::get('/admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@edit');
+    Route::get('/admin/Pemesanan', 'App\Http\Controllers\PemesananController@getTransaksi');
+    Route::get('/admin/Transaksi', 'App\Http\Controllers\PemesananController@viewDataTransaksi');
+    Route::get('/admin/Transaksi/Export', 'App\Http\Controllers\PemesananController@export_excel');
+    //koki
+    Route::get('/koki', 'App\Http\Controllers\DetailPemesananController@viewkoki');
+    //petugas / Kasir
+    Route::get('/petugas', 'App\Http\Controllers\PemesananController@viewpetugas');
+    Route::get('/petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@viewCheckout');
     //CRUD
-        //Admin
-    Route::post('/Admin/Menu/Save', 'App\Http\Controllers\MenuController@store');
-    Route::patch('/Admin/Menu/Ubah/{id}', 'App\Http\Controllers\MenuController@update');
-    Route::delete('/Admin/Menu/Delete/{id}','App\Http\Controllers\MenuController@destroy');
-    Route::post('/Admin/Pegawai/Save', 'App\Http\Controllers\PegawaiController@store');
-    Route::patch('/Admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@update');
-    Route::delete('/Admin/Pegawai/Delete/{id}','App\Http\Controllers\PegawaiController@destroy');
-        //Koki
-    Route::patch('/Koki/Sajikan/{id_detail}', 'App\Http\Controllers\DetailPemesananController@prosesSajikan');
-    Route::patch('/Koki/Masak/{id_detail}', 'App\Http\Controllers\DetailPemesananController@prosesMasak');
-        //Petugas / Kasir
-    Route::patch('/Petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@prosesCheckout');    
+    //admin
+    Route::post('/admin/Menu/Save', 'App\Http\Controllers\MenuController@store');
+    Route::patch('/admin/Menu/Ubah/{id}', 'App\Http\Controllers\MenuController@update');
+    Route::delete('/admin/Menu/Delete/{id}', 'App\Http\Controllers\MenuController@destroy');
+    Route::post('/admin/Pegawai/Save', 'App\Http\Controllers\PegawaiController@store');
+    Route::patch('/admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@update');
+    Route::delete('/admin/Pegawai/Delete/{id}', 'App\Http\Controllers\PegawaiController@destroy');
+    //koki
+    Route::patch('/koki/Sajikan/{id_detail}', 'App\Http\Controllers\DetailPemesananController@prosesSajikan');
+    Route::patch('/koki/Masak/{id_detail}', 'App\Http\Controllers\DetailPemesananController@prosesMasak');
+    //petugas / Kasir
+    Route::patch('/petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@prosesCheckout');
 });
 
 
 //Tamu
-//View
-Route::get('/Tamu/Pemesanan','App\Http\Controllers\PemesananController@create');
-Route::get('/Tamu/{no_meja}/Order/Makanan','App\Http\Controllers\MenuController@createMakanan');
-Route::get('/Tamu/{no_meja}/Order/Minuman','App\Http\Controllers\MenuController@createMinuman');
-Route::get('/Tamu/{no_meja}/Order/detailMenu/{id}','App\Http\Controllers\MenuController@detailMenu'); 
-Route::get('/Tamu/{no_meja}/DaftarPesanan','App\Http\Controllers\DetailPemesananController@viewDaftarPesanan');
-Route::get('/Tamu/{no_meja}/Pesanan/Bayar', 'App\Http\Controllers\PemesananController@viewInvoice');
+// New
+Route::get('/customer', [CustomerOrderController::class, 'index']);
+Route::post('/customer/check-in', [CustomerOrderController::class, 'checkIn']);
+Route::get('/customer/{tableNumber}/order/list', [CustomerOrderController::class, 'detailOrder']);
+Route::post('/customer/{tableNumber}/order/detail/save', [CustomerOrderController::class, 'saveToCart']);
+Route::delete('/customer/{tableNumber}/order/detail/delete/{orderDetailId}', [CustomerOrderController::class, 'cancelOrderInCart']);
+Route::patch('/customer/{tableNumber}/order/detail/process/cart', [CustomerOrderController::class, 'processOrderInCart']);
+Route::get('/customer/{tableNumber}/order/invoice', [CustomerOrderController::class, 'viewInvoice']);
 
-//CRUD
-Route::post('/Tamu/Pemesanan/Save', 'App\Http\Controllers\PemesananController@store');
-Route::post('/Tamu/Order/Save', 'App\Http\Controllers\DetailPemesananController@storeDetail');
-Route::delete('/Tamu/{no_meja}/Detail_Pesanan/Delete/{id_detail}','App\Http\Controllers\DetailPemesananController@destroy');
-Route::patch('/Tamu/{no_meja}/Pesanan/Order', 'App\Http\Controllers\DetailPemesananController@updateStatusPesanan');
-//Route::patch('/Tamu/{no_meja}/Pesanan/Bayar', 'App\Http\Controllers\DetailPemesananController@updatePembayaran');
-
-
-    
-
-
-
-//Cekout
+Route::get('/customer/{tableNumber}/order/food', [CustomerMenuController::class, 'viewFoodMenu']);
+Route::get('/customer/{tableNumber}/order/drink', [CustomerMenuController::class, 'viewDrinkMenu']);
+Route::get('/customer/{tableNumber}/order/detail-menu/{idMenu}', [CustomerMenuController::class, 'viewDetailMenu']);
