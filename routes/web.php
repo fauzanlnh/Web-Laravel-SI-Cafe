@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
@@ -39,11 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/Pemesanan', 'App\Http\Controllers\PemesananController@getTransaksi');
     Route::get('/admin/Transaksi', 'App\Http\Controllers\PemesananController@viewDataTransaksi');
     Route::get('/admin/Transaksi/Export', 'App\Http\Controllers\PemesananController@export_excel');
-    //koki
-    Route::get('/koki', 'App\Http\Controllers\DetailPemesananController@viewkoki');
-    //petugas / Kasir
-    Route::get('/petugas', 'App\Http\Controllers\PemesananController@viewpetugas');
-    Route::get('/petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@viewCheckout');
+
     //CRUD
     //admin
     Route::post('/admin/Menu/Save', 'App\Http\Controllers\MenuController@store');
@@ -52,11 +49,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/Pegawai/Save', 'App\Http\Controllers\PegawaiController@store');
     Route::patch('/admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@update');
     Route::delete('/admin/Pegawai/Delete/{id}', 'App\Http\Controllers\PegawaiController@destroy');
+
     //koki
-    Route::patch('/koki/Sajikan/{id_detail}', 'App\Http\Controllers\DetailPemesananController@prosesSajikan');
-    Route::patch('/koki/Masak/{id_detail}', 'App\Http\Controllers\DetailPemesananController@prosesMasak');
+    Route::get('/koki', [DashboardOrderController::class, 'indexChef']);
+    Route::patch('/koki/process/{process}/{id_detail}', [DashboardOrderController::class, 'processOrderChef']);
+
     //petugas / Kasir
     Route::patch('/petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@prosesCheckout');
+    Route::get('/petugas', 'App\Http\Controllers\PemesananController@viewpetugas');
+    Route::get('/petugas/Checkout/{id_pemesanan}', 'App\Http\Controllers\PemesananController@viewCheckout');
 });
 
 
