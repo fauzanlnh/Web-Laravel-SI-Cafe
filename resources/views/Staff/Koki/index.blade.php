@@ -18,8 +18,8 @@
                 <span id="tutup" class="text-right font-bold tutup">&times;</span>
                 <p class="isi-modal overflow-auto font-bold text-center">Masak Selesai? </p>
                 <div class="flex justify-center mt-3">
-                        <button class="sudah font-bold text-white mx-2">Sudah</button>
-                        <button id='belum' class="belum font-bold text-white mx-2">Belum</button>
+                    <button class="sudah font-bold text-white mx-2">Sudah</button>
+                    <button id='belum' class="belum font-bold text-white mx-2">Belum</button>
                 </div>
             </div>
         </div>
@@ -52,60 +52,59 @@
                     List Pesanan
                 </div>
                 <!-- sudah  -->
-                @foreach($daftar_pesanan as $item)                
-                @if($item->status_pemesanan == 'Masak')
-                <form action="{{ url('/Koki/Sajikan/'.$item->id_detail) }}" method="POST" 
-                    onsubmit="return confirm('Sajikan Kepada Customer?');">
-                @else
-                <form action="{{ url('/Koki/Masak/'.$item->id_detail) }}" method="POST" 
-                    onsubmit="return confirm('Proses Pesanan?');">
-                @endif
-                {{ csrf_field() }}
-                {{ method_field('patch') }}
-                <input type="hidden" value='{{ $item->id_detail }}' name='id_detail'>
-                
-                <button>
-                <div class="pembelian">
-                    @if($item->status_pemesanan == 'Masak')
-                    <div class="active text-center font-bold text-xl flex justify-center mt-5">
-                    @else
-                    <div class="deactive text-center font-bold text-xl flex justify-center mt-5">
-                    @endif
-                        {{$item->no_meja}}
-                        @if($item->status_pemesanan == 'Masak')
-                        <div class="spacer h-auto ml-5">&nbsp;</div>
+                @foreach ($orders as $order)
+                    @if ($order->order_detail_status == 'cook')
+                        <form action="{{ url('/koki/process/send-to-customer/' . $order->id) }}" method="POST"
+                            onsubmit="return confirm('Sajikan Kepada Customer?');">
                         @else
-                        <div class="spacerde h-auto ml-5">&nbsp;</div>
-                        @endif
-                        
-                        <div class="ml-4">
-                            {{ $item->nama_menu}}
-                        </div>
-                        <div class='total ml-4'>
-                            {{ $item->jumlah_pesan}}
-                        </div>
-                        <div class="status ml-4">
-                            @if($item->status_pemesanan == 'Masak')
-                                <img src="{{ asset('asset/img/ceklis.png') }}" alt=""class="mt">
-                            @else
-                                <img src="{{ asset('asset/img/close.png') }}" alt=""class="mt">
+                            <form action="{{ url('/koki/process/cooking/' . $order->id) }}" method="POST"
+                                onsubmit="return confirm('Proses Pesanan untuk dimasak?');">
+                    @endif
+                    {{ csrf_field() }}
+                    {{ method_field('patch') }}
+                    <input type="hidden" value='{{ $order->id }}' name='id'>
+                    <button>
+                        <div class="pembelian">
+                            @if ($order->order_detail_status == 'cook')
+                                <div class="active text-center font-bold text-xl flex justify-center mt-5">
+                                @else
+                                    <div class="deactive text-center font-bold text-xl flex justify-center mt-5">
                             @endif
+                            {{ $order->no_meja }}
+                            @if ($order->order_detail_status == 'cook')
+                                <div class="spacer h-auto ml-5">&nbsp;</div>
+                            @else
+                                <div class="spacerde h-auto ml-5">&nbsp;</div>
+                            @endif
+
+                            <div class="ml-4">
+                                {{ $order->menu->name }}
+                            </div>
+                            <div class='total ml-4'>
+                                {{ $order->qty }}
+                            </div>
+                            <div class="status ml-4">
+                                @if ($order->order_detail_status == 'cook')
+                                    <img src="{{ asset('asset/img/ceklis.png') }}" alt=""class="mt">
+                                @else
+                                    <img src="{{ asset('asset/img/close.png') }}" alt=""class="mt">
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                        
-                </div>
-                <button>  
-                </form>
-                @endforeach
-                
 
             </div>
+            <button>
+                </form>
+                @endforeach
+
+
         </div>
+    </div>
     </div>
 
 </body>
 <script>
-   /* const belanjaan = document.getElementById('belanjaan')
+    /* const belanjaan = document.getElementById('belanjaan')
     const beli = document.getElementsByClassName('pembelian')
     const tutup = document.getElementById('tutup')
     tutup.onclick = function () {

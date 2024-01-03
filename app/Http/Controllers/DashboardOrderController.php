@@ -15,6 +15,9 @@ class DashboardOrderController extends Controller
         return OrderDetail::where('order_detail_status', '=', 'pending')->orWhere('order_detail_status', 'cook')->with('order', 'menu')->get();
     }
 
+    /*
+     * Role Admin
+     */
     public function indexAdmin()
     {
         $transaksi = DB::table('orders')
@@ -55,6 +58,23 @@ class DashboardOrderController extends Controller
             ->get();
         return view('staff/admin/index', ['transaksi' => $transaksi, 'menu' => $menu, 'pegawai' => $pegawai, 'barmin' => $barchartMinuman, 'barman' => $barchartMakanan, 'pendapatan' => $lineChartPendaptan]);
     }
+
+    public function viewOngoingOrder()
+    {
+        $orders = Order::where('payment_status', 'pending')->get();
+        return view('staff/admin/orderFinished', ['orders' => $orders]);
+    }
+
+    public function viewDataTransaksi()
+    {
+        $orders = Order::where('payment_status', 'done')->with('detailOrder.menu')->get();
+        ddd($orders[0]->detailOrder[0]->menu);
+        return view('staff/admin/orderFinished', ['orders' => $orders]);
+    }
+
+    /*
+     * Role Chef
+     */
     public function indexChef()
     {
         $orders = $this->getAllOrder();
@@ -81,6 +101,9 @@ class DashboardOrderController extends Controller
         }
     }
 
+    /*
+     * Role Petugas
+     */
     public function indexPetugas()
     {
         $orders = DB::table('order_details')

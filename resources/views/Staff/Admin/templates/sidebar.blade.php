@@ -68,6 +68,15 @@
                     </ul>
                 </li>
                 {{-- End of sidebar item staff --}}
+                {{-- Sidebar item order ongoin --}}
+                <li class="nav-item ">
+                    <a href="{{ url('admin/pesanan') }}"
+                        class="nav-link {{ request()->is('admin/pesanan') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>Pesanan</p>
+                    </a>
+                </li>
+                {{-- End of sidebar item order ongoing --}}
 
                 {{-- Sidebar item laporan --}}
                 <li class="nav-item ">
@@ -77,6 +86,9 @@
                         <p>Laporan</p>
                     </a>
                 </li>
+                {{-- End of sidebar item laporan --}}
+
+
                 {{-- End of sidebar item laporan --}}
             </ul>
         </nav>

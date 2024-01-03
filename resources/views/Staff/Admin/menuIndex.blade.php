@@ -55,7 +55,7 @@
                                                 <button type="submit" class="btn btn-danger ml-2">Hapus</button>
 
                                             </form>
-                                            
+
                                         </div>
 
                                     </div>

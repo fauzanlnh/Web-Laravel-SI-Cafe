@@ -7,7 +7,6 @@
     <title>Main Page</title>
     <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/tailwind.css') }}">
-@
     <style>
         li>ul {
             transform: translatex(100%) scale(0)

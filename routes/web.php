@@ -18,23 +18,19 @@ use App\Http\Controllers\DashboardStaffController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Route::get('/',[MakananController::class,'index']);
-
 //Index
 Route::get('/', [AuthController::class, 'index']);
-Route::get('/login', [AuthController::class, 'index']);
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('login/check', [AuthController::class, 'checkLogin']);
 
 
 Route::group(['middleware' => 'auth'], function () {
+    // admin
     Route::get('/admin', [DashboardOrderController::class, 'indexAdmin']);
+    Route::get('/admin/pesanan', [DashboardOrderController::class, 'viewOngoingOrder']);
+    Route::get('/admin/transaksi', [DashboardOrderController::class, 'viewDataTransaksi']);
     Route::resource('/admin/menu', DashboardMenuController::class);
     Route::resource('/admin/staff', DashboardStaffController::class);
-
-    // 
-    Route::get('/admin/Pemesanan', 'App\Http\Controllers\PemesananController@getTransaksi');
-    Route::get('/admin/transaksi', 'App\Http\Controllers\PemesananController@viewDataTransaksi');
-    Route::get('/admin/Transaksi/Export', 'App\Http\Controllers\PemesananController@export_excel');
 
     //koki
     Route::get('/koki', [DashboardOrderController::class, 'indexChef']);
