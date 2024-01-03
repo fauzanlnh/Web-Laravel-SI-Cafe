@@ -109,7 +109,8 @@ class DashboardOrderController extends Controller
         $orders = DB::table('order_details')
             ->selectRaw('orders.id, sum(detail_total) as total')
             ->where('payment_status', '=', 'pending')
-            ->where('order_details.order_detail_status', '=', 'served')
+            ->where('order_details.order_detail_status', '=', 'cook')
+            ->orWhere('order_details.order_detail_status', '=', 'served')
             ->join('orders', 'orders.id', '=', 'order_details.order_id')
             ->groupBy('orders.id')
             ->get();
@@ -120,15 +121,16 @@ class DashboardOrderController extends Controller
     {
         $order = DB::table('order_details')
             ->selectRaw('orders.id, sum(detail_total) as total')
-            ->where('order_details.order_detail_status', '=', 'served')
             ->where('orders.id', '=', $orderId)
+            ->where('order_details.order_detail_status', '=', 'served')
+            ->orWhere('order_details.order_detail_status', '=', 'cook')
             ->join('orders', 'orders.id', '=', 'order_details.order_id')
             ->groupBy('orders.id')
             ->first();
-
         $listOrders = OrderDetail::select('orders.table_number', 'order_details.price as price', 'menus.name', 'order_details.price', 'order_details.qty', "order_details.detail_total")
             ->where('order_details.order_id', '=', $orderId)
             ->where('order_details.order_detail_status', '=', 'served')
+            ->orWhere('order_details.order_detail_status', '=', 'cook')
             ->join('menus', 'menus.id', '=', 'order_details.menu_id')
             ->join('orders', 'orders.id', '=', 'order_details.order_id')
             ->get();

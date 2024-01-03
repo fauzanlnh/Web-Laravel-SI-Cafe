@@ -8,7 +8,7 @@
         <?php $total = 0; ?>
         @foreach ($dataOrder->detailOrder as $detailOrder)
             <?php
-            if ($detailOrder->order_detail_status != 'cart') {
+            if ($detailOrder->order_detail_status == 'cook' || $detailOrder->order_detail_status == 'served') {
                 $total += $detailOrder->menu->price * $detailOrder->qty;
             }
             ?>

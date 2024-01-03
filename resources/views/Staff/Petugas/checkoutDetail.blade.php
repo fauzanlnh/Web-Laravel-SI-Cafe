@@ -72,7 +72,7 @@
                                 <tr>
                                     <td>{{ $i }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->price }}</td>
+                                    <td>{{ number_format($item->price) }}</td>
                                     <td>{{ $item->qty }}</td>
                                     <td>{{ number_format($item->detail_total) }}</td>
                                 </tr>
@@ -87,8 +87,8 @@
                     name="total" id="total">
             </div>
             <div class="mt-5">
-                Bayar :<input type="number" class='w-1/4  text-right float-right  border border-secondary' onchange="hitung(this.value)"
-                    name="bayar" min=1>
+                Bayar :<input type="number" class='w-1/4  text-right float-right  border border-secondary'
+                    onkeyup="hitung(this.value)" onchange="hitung(this.value)" name="bayar" min=1>
             </div>
             <div class="mt-5 mr-2">
                 Kembalian :<input type="number" class='w-1/4  text-right float-right'readonly name="kembalian"
@@ -100,11 +100,15 @@
 
 </body>
 <script>
+    function formatNumber(number) {
+        return new Intl.NumberFormat('id-ID').format(number);
+    }
+
     function hitung(val) {
         var total = parseInt(document.getElementById('total').value);
         var bayar = parseInt(val);
         var hitung = bayar - total;
-        document.getElementById('kembalian').value = hitung;
+        document.getElementById('kembalian').value = formatNumber(hitung);
     }
     const belanjaan = document.getElementById('belanjaan')
     const beli = document.getElementsByClassName('pembayaran')
