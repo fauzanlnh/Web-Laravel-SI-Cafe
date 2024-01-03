@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\DashboardOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\TableController;
 use App\Http\Controllers\CustomerMenuController;
 use App\Http\Controllers\CustomerOrderController;
+use App\Http\Controllers\DashboardMenuController;
+use App\Http\Controllers\DashboardOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,25 +26,18 @@ Route::post('login/check', [AuthController::class, 'checkLogin']);
 
 
 Route::group(['middleware' => 'auth'], function () {
-    //petugas    
-//View
-    //admin
-    Route::get('/admin', 'App\Http\Controllers\PemesananController@index');
-    Route::get('/admin/Menu', 'App\Http\Controllers\MenuController@index');
-    Route::get('/admin/Menu/Tambah', 'App\Http\Controllers\MenuController@create');
-    Route::get('/admin/Menu/Ubah/{id}', 'App\Http\Controllers\MenuController@edit');
+    Route::get('/admin', [DashboardOrderController::class, 'indexAdmin']);
+    Route::resource('/admin/menu', DashboardMenuController::class);
+
+    // 
     Route::get('/admin/Pegawai', 'App\Http\Controllers\PegawaiController@index');
     Route::get('/admin/Pegawai/Tambah', 'App\Http\Controllers\PegawaiController@create');
     Route::get('/admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@edit');
     Route::get('/admin/Pemesanan', 'App\Http\Controllers\PemesananController@getTransaksi');
-    Route::get('/admin/Transaksi', 'App\Http\Controllers\PemesananController@viewDataTransaksi');
+    Route::get('/admin/transaksi', 'App\Http\Controllers\PemesananController@viewDataTransaksi');
     Route::get('/admin/Transaksi/Export', 'App\Http\Controllers\PemesananController@export_excel');
 
     //CRUD
-    //admin
-    Route::post('/admin/Menu/Save', 'App\Http\Controllers\MenuController@store');
-    Route::patch('/admin/Menu/Ubah/{id}', 'App\Http\Controllers\MenuController@update');
-    Route::delete('/admin/Menu/Delete/{id}', 'App\Http\Controllers\MenuController@destroy');
     Route::post('/admin/Pegawai/Save', 'App\Http\Controllers\PegawaiController@store');
     Route::patch('/admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@update');
     Route::delete('/admin/Pegawai/Delete/{id}', 'App\Http\Controllers\PegawaiController@destroy');

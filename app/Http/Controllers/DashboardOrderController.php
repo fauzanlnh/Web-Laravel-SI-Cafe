@@ -15,6 +15,46 @@ class DashboardOrderController extends Controller
         return OrderDetail::where('order_detail_status', '=', 'pending')->orWhere('order_detail_status', 'cook')->with('order', 'menu')->get();
     }
 
+    public function indexAdmin()
+    {
+        $transaksi = DB::table('orders')
+            ->selectRaw('COUNT(orders.id) as total_transaksi, SUM(total_purchases)as total_pemasukan')
+            ->get();
+        $menu = DB::table('menus')
+            ->selectRaw('COUNT(menus.id) as total_menu')
+            ->get();
+        $pegawai = DB::table('staff')
+            ->selectRaw('COUNT(staff.id) as total_pegawai')
+            ->get();
+        $barchartMinuman = DB::table('order_details')
+            ->selectRaw('month(date) as "bulan",year(date) as "year", SUM(qty) as jumlah_minuman, monthname(date) as namabulan')
+            ->join('menus', 'menus.id', '=', 'order_details.menu_id')
+            ->join('orders', 'orders.id', '=', 'order_details.order_id')
+            ->where('category', '=', 'minuman')
+            ->groupBy('bulan')
+            ->orderBy('year', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->limit(12)
+            ->get();
+        $barchartMakanan = DB::table('order_details')
+            ->selectRaw('month(date) as "bulan",year(date) as "year", SUM(qty) as jumlah_minuman, monthname(date) as namabulan')
+            ->join('menus', 'menus.id', '=', 'order_details.menu_id')
+            ->join('orders', 'orders.id', '=', 'order_details.order_id')
+            ->where('category', '=', 'makanan')
+            ->groupBy('bulan')
+            ->orderBy('year', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->limit(12)
+            ->get();
+        $lineChartPendaptan = DB::table('orders')
+            ->selectRaw('month(date) as "bulan",year(date) as "year", SUM(total_purchases) as pendapatan_perbulan, monthname(date) as namabulan')
+            ->groupBy('bulan')
+            ->orderBy('year', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->limit(12)
+            ->get();
+        return view('staff/admin/index', ['transaksi' => $transaksi, 'menu' => $menu, 'pegawai' => $pegawai, 'barmin' => $barchartMinuman, 'barman' => $barchartMakanan, 'pendapatan' => $lineChartPendaptan]);
+    }
     public function indexChef()
     {
         $orders = $this->getAllOrder();
@@ -78,7 +118,7 @@ class DashboardOrderController extends Controller
         try {
             Order::find($orderId)->update([
                 'payment_status' => 'done',
-                'total_pembayaran' => $request->total2
+                'total_purchases' => $request->total2
             ]);
 
             OrderDetail::where('order_id', $orderId)->where('order_detail_status', '!=', 'served')->delete();
