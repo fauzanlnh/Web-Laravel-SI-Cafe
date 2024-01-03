@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomerMenuController;
 use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\DashboardMenuController;
 use App\Http\Controllers\DashboardOrderController;
+use App\Http\Controllers\DashboardStaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,19 +29,12 @@ Route::post('login/check', [AuthController::class, 'checkLogin']);
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin', [DashboardOrderController::class, 'indexAdmin']);
     Route::resource('/admin/menu', DashboardMenuController::class);
+    Route::resource('/admin/staff', DashboardStaffController::class);
 
     // 
-    Route::get('/admin/Pegawai', 'App\Http\Controllers\PegawaiController@index');
-    Route::get('/admin/Pegawai/Tambah', 'App\Http\Controllers\PegawaiController@create');
-    Route::get('/admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@edit');
     Route::get('/admin/Pemesanan', 'App\Http\Controllers\PemesananController@getTransaksi');
     Route::get('/admin/transaksi', 'App\Http\Controllers\PemesananController@viewDataTransaksi');
     Route::get('/admin/Transaksi/Export', 'App\Http\Controllers\PemesananController@export_excel');
-
-    //CRUD
-    Route::post('/admin/Pegawai/Save', 'App\Http\Controllers\PegawaiController@store');
-    Route::patch('/admin/Pegawai/Ubah/{id}', 'App\Http\Controllers\PegawaiController@update');
-    Route::delete('/admin/Pegawai/Delete/{id}', 'App\Http\Controllers\PegawaiController@destroy');
 
     //koki
     Route::get('/koki', [DashboardOrderController::class, 'indexChef']);
