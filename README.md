@@ -59,21 +59,21 @@ This screenshot showcases a sample view of the SI Cafe application.
 
 ### Customer View
 
-![Example View](./storage/app/public/img/readme/customer-1.PNG)
-![Example View](./storage/app/public/img/readme/customer-2.PNG)
+![Example View](./public/asset/img/readme/customer-1.PNG)
+![Example View](./public/asset/img/readme/customer-2.PNG)
 
 ### Chef View
 
-![Example View](./storage/app/public/img/readme/chef-1.PNG)
+![Example View](./public/asset/img/readme/chef-1.PNG)
 
 ### Cashier View
 
-![Example View](./storage/app/public/img/readme/cashier-1.PNG)
-![Example View](./storage/app/public/img/readme/cashier-2.PNG)
+![Example View](./public/asset/img/readme/cashier-1.PNG)
+![Example View](./public/asset/img/readme/cashier-2.PNG)
 
 ## Admin View
 
-![Example View](./storage/app/public/img/readme/admin.PNG)
+![Example View](./public/asset/img/readme/admin.PNG)
 
 ## Features
 
